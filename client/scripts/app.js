@@ -31,9 +31,10 @@ App.prototype.fetch = function() {
   var that = this;
   $.ajax({
   // This is the url you should use to communicate with the parse API server.
-    url: 'http://parse.atx.hackreactor.com/chatterbox/classes/messages?order=-createdAt',
+    url: 'http://parse.atx.hackreactor.com/chatterbox/classes/messages',
     type: 'GET',
-    // data: JSON.stringify(message),
+    data: 'order=-createdAt',
+    data: 'where={"roomname":"4chan"}',
     contentType: 'application/json',
     success: function (data) {
       console.log('chatterbox: Message retrieved');
@@ -45,6 +46,9 @@ App.prototype.fetch = function() {
       // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
       console.error('chatterbox: Failed to retrieve message', data);
     }
+    
+    // keys allows you to restrict data to specific types
+      // key for each roomname allows us to specify just that room's messages
   });
 };
 
