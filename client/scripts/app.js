@@ -1,11 +1,3 @@
-// var app = new App();
-
-// $(document).ready(function() {
-  
-//   app.init();
-// });
-
-
 var App = function() {
   this.server = 'http://parse.atx.hackreactor.com/chatterbox/classes/messages';
   
@@ -52,9 +44,6 @@ App.prototype.fetch = function() {
       console.error('chatterbox: Failed to retrieve message', data);
     }
   });
-//  dataArray[0].results.forEach(function(message) {
-//    this.renderMessage(message);
-//  });
 };
 
 App.prototype.clearMessages = function() {
