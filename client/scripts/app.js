@@ -1,4 +1,9 @@
+// var app = new App();
 
+// $(document).ready(function() {
+  
+//   app.init();
+// });
 
 
 var App = function() {
@@ -7,8 +12,8 @@ var App = function() {
 };
 
 App.prototype.init = function() {
-  this.fetch;
-
+  var answer = this.fetch();
+  
 };
 
 App.prototype.send = function(message) {
@@ -29,23 +34,49 @@ App.prototype.send = function(message) {
 };
 
 App.prototype.fetch = function() {
+  var that = this;
   $.ajax({
   // This is the url you should use to communicate with the parse API server.
     url: 'http://parse.atx.hackreactor.com/chatterbox/classes/messages',
     type: 'GET',
-    data: JSON.stringify(message),
+    // data: JSON.stringify(message),
     contentType: 'application/json',
     success: function (data) {
       console.log('chatterbox: Message retrieved');
+      data.results.forEach(function(message) {
+        that.renderMessage(message);
+      });
     },
     error: function (data) {
       // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
       console.error('chatterbox: Failed to retrieve message', data);
     }
   });
+//  dataArray[0].results.forEach(function(message) {
+//    this.renderMessage(message);
+//  });
+};
+
+App.prototype.clearMessages = function() {
+  $('#chats').html('');
+};
+
+App.prototype.renderMessage = function(message) {
+  var renderedMessage = $('<p>' + message.username + '<br></br>' + message.text + '</p>');
+  $('#chats').append(renderedMessage);
+};
+
+App.prototype.renderRoom = function() {
+
 };
 
 var app = new App();
+
+$(document).ready(function() {
+  
+  app.init();
+});
+
 //On Sumbit click //
 /*
 $.ajax({
