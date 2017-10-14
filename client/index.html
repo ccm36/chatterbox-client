@@ -29,8 +29,11 @@
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
       <div>
-        <form method="POST">
-          <input action="http://parse.atx.hackreactor.com/chatterbox/classes/messages" type="text" name="message">
+        <div id="roomSelect">
+          
+        </div>
+        <form method="POST" id='post'>
+          <input action="http://parse.atx.hackreactor.com/chatterbox/classes/messages" type="text" name="message" value="Enter message">
           <input type="submit" value="submit" id="submit">
         </form>
       </div>
