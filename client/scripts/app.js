@@ -1,13 +1,52 @@
 var App = function() {
   this.server = 'http://parse.atx.hackreactor.com/chatterbox/classes/messages';
-  this.roomname = 'lobby';
+  this.roomname = '4chan';
   this.username = 'defaultUser';
+  this.roomNames = [];
 };
 
 App.prototype.init = function() {
   var answer = this.fetch();
   // what is the goal for init?
 };
+
+App.prototype.getRooms = function() {
+  console.log('getting rooms');
+  $.ajax({
+  // This is the url you should use to communicate with the parse API server.
+    url: 'http://parse.atx.hackreactor.com/chatterbox/classes/messages',
+    type: 'GET',
+    data: 'order=-createdAt',
+    //data: 'where={"roomname":{"$exists":true}}',
+    contentType: 'application/json',
+    success: function (data) {
+      console.log('chatterbox: Got Rooms');
+      console.log(data.results);
+       // for (var key in data){
+       //   if ()
+       // }
+      var roomNames = _.reduce(data.results, function(rooms, message) {
+        console.log(message.roomname, JSON.stringify(rooms));
+        if (!rooms.includes(message.roomname) && message.roomname !== undefined) {
+          rooms.push(message.roomname);
+        }
+        return rooms;
+      }, []);
+       
+      roomNames.forEach(function(room) {
+        if (!app.roomNames.contains(room)) {
+          app.roomNames.push(room);
+        }
+      });
+      
+    },
+    error: function (data) {
+      // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
+      console.error('chatterbox: Failed to send message', data);
+    }
+  });
+};
+
 
 App.prototype.send = function(message) {
   console.log('sending message');
@@ -29,12 +68,13 @@ App.prototype.send = function(message) {
 
 App.prototype.fetch = function() {
   var that = this;
+  var room = 'where={"roomname":"' + app.roomname + '"}';
   $.ajax({
   // This is the url you should use to communicate with the parse API server.
     url: 'http://parse.atx.hackreactor.com/chatterbox/classes/messages',
     type: 'GET',
     data: 'order=-createdAt',
-    data: 'where={"roomname":"4chan"}',
+    data: room,
     contentType: 'application/json',
     success: function (data) {
       console.log('chatterbox: Message retrieved');
@@ -46,9 +86,6 @@ App.prototype.fetch = function() {
       // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
       console.error('chatterbox: Failed to retrieve message', data);
     }
-    
-    // keys allows you to restrict data to specific types
-      // key for each roomname allows us to specify just that room's messages
   });
 };
 
